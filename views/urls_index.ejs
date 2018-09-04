@@ -4,15 +4,16 @@
   <%- include ./partials/_header.ejs %>
   <title>TinyApp</title>
 </head>
-<body>
+<body style="text-align:center;">
 
-  <ul>
+  <div>
     <% for(url in urls) { %>
-        <li><a href="<%= urls[url] %>"><%= urls[url] %></a> --> <%= url %> </li>
+        <a href="<%= urls[url] %>"><%= urls[url] %></a> --> <%= url %>
+        <a href="/urls/<%= url %>">EDIT</a>
         <form method="POST" action="/urls/<%= url %>/delete"><button>DELETE</button></form>
 
     <% }; %>
-  </ul>
+  </div>
 
   <button href="/urls/new" >Shorten URL!</button>
 
