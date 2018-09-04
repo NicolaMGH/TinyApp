@@ -40,6 +40,7 @@ app.post("/urls", (req, res) => {
   res.redirect("/urls");
 });
 
+//deletes url
 app.post("/urls/:id/delete", (req, res) => {
   delete urlDatabase[req.params.id];
   res.redirect("/urls");
