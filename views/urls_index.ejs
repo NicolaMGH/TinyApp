@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include ./partials/_header.ejs %>
+  <title>TinyApp</title>
+</head>
+<body>
+
+  <ul>
+    <% for(url in urls) { %>
+        <li><%= urls[url] %></li>
+        <ul><%= url %></ul>
+    <% }; %>
+  </ul>
+
+  <button href="" >Shorten URL!</button>
+
+</body>
+</html>
