@@ -8,12 +8,13 @@
 
   <ul>
     <% for(url in urls) { %>
-        <li><%= urls[url] %></li>
-        <ul><%= url %></ul>
+        <li><a href="<%= urls[url] %>"><%= urls[url] %></a> --> <%= url %> </li>
+        <form method="POST" action="/urls/<%= url %>/delete"><button>DELETE</button></form>
+
     <% }; %>
   </ul>
 
-  <button href="" >Shorten URL!</button>
+  <button href="/urls/new" >Shorten URL!</button>
 
 </body>
 </html>
