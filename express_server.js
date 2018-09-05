@@ -153,8 +153,8 @@ function findEmail(email){
     if(email === users[userID].email){
       return true;
     }
-    return false;
   }
+  return false;
 };
 
 function findPassword(password){
@@ -162,8 +162,8 @@ function findPassword(password){
     if(password === users[pass].password){
       return true;
     }
-    return false;
   }
+  return false;
 };
 
 function findId(email){
@@ -171,8 +171,8 @@ function findId(email){
     if(email === users[id].email){
       return id;
     }
-    return false;
   }
+  return false;
 };
 
 
