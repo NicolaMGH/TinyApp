@@ -31,8 +31,7 @@ const users = {
 app.get("/", (req, res) => {
   let user = users[req.cookies["user_id"]];
   let templateVars = {user: user};
-  res.send("Hello!");
-  res.render("urls_index", templateVars);
+  res.render("index", templateVars);
 });
 
 app.get("/urls.json", (req, res) => {
@@ -97,8 +96,16 @@ app.post("/urls", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  res.cookie("username", req.body.username);
-  res.redirect("/urls");
+  if(!findEmail(req.body.email)){
+    res.status(403);
+    res.send("E-mail does not exist.");
+  } else if (!findPassword(req.body.password)){
+    res.status(403);
+    res.send("Password is invalid.");
+  } else {
+    res.cookie("user_id", findId(req.body.email));
+    res.redirect("/");
+  }
 });
 
 app.post("/logout", (req, res) => {
@@ -149,6 +156,27 @@ function findEmail(email){
     return false;
   }
 };
+
+function findPassword(password){
+  for (let pass in users){
+    if(password === users[pass].password){
+      return true;
+    }
+    return false;
+  }
+};
+
+function findId(email){
+  for (let id in users){
+    if(email === users[id].email){
+      return id;
+    }
+    return false;
+  }
+};
+
+
+
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
