@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>TinyApp</title>
+</head>
+<body style="text-align:center;">
+
+  <h1>TinyApp!</h1>
+
+  <% if(!user){ %>
+    <form action="/login" method="POST" style="margin:25px">
+      <label for="name">Login:</label>
+      <input type="text" name="email" placeholder="e-mail">
+      <input type="test" name="password" placeholder="password">
+      <button type="submit">Login!</button>
+    </form>
+  <% } else { %>
+    <p>Logged in as: <strong><%= user %></strong></p>
+    <form action="/logout" method="POST" style="margin: 25px">
+      <button type="submit">Logout!</button>
+    </form>
+  <% } %>
+
+
+</body>
+</html>
