@@ -57,12 +57,11 @@ app.get("/urls/new", (req, res) => {
   res.render("urls_new", templateVars);
 });
 
-<<<<<<< HEAD
 app.post("/urls/new", (req, res) => {
   res.redirect("/urls/new");
 });
 
-=======
+
 //renders register page
 app.get("/register", (req, res) => {
   let user = users[req.cookies["user_id"]];
@@ -95,7 +94,6 @@ app.post("/register", (req, res) => {
 });
 
 //add urls to database
->>>>>>> feature/user-registration
 app.post("/urls", (req, res) => {
   const shortURL = generateRandomString();
   urlDatabase[shortURL] = req.body.longURL;
