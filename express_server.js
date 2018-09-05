@@ -52,9 +52,13 @@ app.get("/urls", (req, res) => {
 });
 
 app.get("/urls/new", (req, res) => {
-  let user = users[req.cookies["user_id"]];
-  let templateVars = {user: user};
-  res.render("urls_new", templateVars);
+  if(req.cookies["user_id"] === undefined){
+    res.redirect("/login");
+  } else {
+    let user = users[req.cookies["user_id"]];
+    let templateVars = {user: user};
+    res.render("urls_new", templateVars);
+  }
 });
 
 app.post("/urls/new", (req, res) => {
