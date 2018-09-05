@@ -39,6 +39,10 @@ app.get("/urls/new", (req, res) => {
   res.render("urls_new", templateVars);
 });
 
+app.post("/urls/new", (req, res) => {
+  res.redirect("/urls/new");
+});
+
 app.post("/urls", (req, res) => {
   console.log(req.body);
   const shortURL = generateRandomString();
@@ -82,7 +86,7 @@ function generateRandomString() {
   let id = "";
   const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-  for (var i = 0; i < 6; i++) {
+  for (let i = 0; i < 6; i++) {
     id += possible.charAt(Math.floor(Math.random() * possible.length));
   }
 
