@@ -148,6 +148,7 @@ function generateRandomString() {
   return id;
 }
 
+//functions to find email, password and id
 function findEmail(email){
   for (let userID in users){
     if(email === users[userID].email){
