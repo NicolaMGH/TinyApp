@@ -9,7 +9,7 @@
   <div>
     <% for(url in urls) { %>
         <form method="POST" action="/urls/<%= url %>/delete">
-          <a href="<%= urls[url] %>"><%= urls[url] %></a> --> <%= url %> <a href="/urls/<%= url %>">EDIT</a> <button>DELETE</button>
+          <a href="<%= urls[url] %>"><%= urls[url] %></a> --> <%= url %>  <a href="/urls/<%= url %>">EDIT</a>  <button>DELETE</button>
         </form>
     <% }; %>
   </div>

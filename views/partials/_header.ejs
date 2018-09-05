@@ -5,13 +5,22 @@
 </head>
 <body style="text-align:center;">
 
-<h1>TinyApp Header!</h1>
+  <h1>TinyApp Header!</h1>
 
-    <form action="/login" method="POST">
-      <label for="name">Login</label>
-      <input type="text" name="username" placeholder="type your username here">
+  <% if(!username){ %>
+    <form action="/login" method="POST" style="margin:25px">
+      <label for="name">Login:</label>
+      <input type="text" name="username" placeholder="username">
+      <input type="test" name="password" placeholder="password">
       <button type="submit">Login!</button>
     </form>
+  <% } else { %>
+    <p>Logged in as: <strong><%= username %></strong></p>
+    <form action="/logout" method="POST" style="margin: 25px">
+      <button type="submit">Logout!</button>
+    </form>
+  <% } %>
+
 
 </body>
 </html>
