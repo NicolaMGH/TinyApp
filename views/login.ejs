@@ -3,6 +3,7 @@
 <head>
   <title>TinyApp</title>
 </head>
+<%- include ./partials/_header.ejs %>
 <body style="text-align:center;">
 
   <h1>TinyApp!</h1>
@@ -15,7 +16,7 @@
       <button type="submit">Login!</button>
     </form>
   <% } else { %>
-    <p>Logged in as: <strong><%= user %></strong></p>
+    <p>Logged in as: <strong><%= user.email %></strong></p>
     <form action="/logout" method="POST" style="margin: 25px">
       <button type="submit">Logout!</button>
     </form>

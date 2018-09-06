@@ -7,6 +7,9 @@
 
   <h1>TinyApp!</h1>
 
+  <a href="/">Home</a>
+  <a href="/urls" style="margin-bottom:20px">URLS</a>
+
   <% if(user){ %>
     <p>Logged in as: <strong><%= user.email %></strong></p>
     <form action="/logout" method="POST" style="margin: 25px">

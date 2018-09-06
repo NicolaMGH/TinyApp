@@ -6,17 +6,24 @@
 </head>
 <body style="text-align:center;">
 
-  <div>
-    <% for(url in urls) { %>
-        <form method="POST" action="/urls/<%= url %>/delete">
-          <a href="<%= urls[url] %>"><%= urls[url] %></a> --> <%= url %>  <a href="/urls/<%= url %>">EDIT</a>  <button>DELETE</button>
-        </form>
-    <% }; %>
-  </div>
+
 
     <form method = "POST" action="/urls/new/">
       <button>Shorten URL!</button>
     </form>
+
+  <% if(user){ %>
+    <div>
+      <% for(url in urls) { %>
+        <form method="POST" action="/urls/<%= url %>/delete">
+          <a href="<%= urls[url].longURL %>"><%= urls[url].longURL %></a> --> <%= url %>  <a href="/urls/<%= url %>">EDIT</a>  <button>DELETE</button>
+        </form>
+      <% }; %>
+    </div>
+  <% } else {%>
+    <p>Please register to view URLS!</p>
+    <a href="/register"><p>Register here!</p></a>
+  <% } %>
 
 
 </body>

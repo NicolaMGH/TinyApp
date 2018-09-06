@@ -10,8 +10,14 @@ app.set("view engine", "ejs");
 
 //url database
 const urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
+  "b2xVn2":{
+    id: "userRandomID",
+    longURL: "http://www.lighthouselabs.ca"
+  },
+  "9sm5xK":{
+    id: "user2RandomID",
+    longURL: "http://www.google.com"
+  }
 };
 
 //user database
@@ -19,12 +25,12 @@ const users = {
   "userRandomID": {
     id: "userRandomID",
     email: "user@example.com",
-    password: "purple-monkey-dinosaur"
+    password: "123"
   },
  "user2RandomID": {
     id: "user2RandomID",
     email: "user2@example.com",
-    password: "dishwasher-funk"
+    password: "123"
   }
 };
 
@@ -77,8 +83,8 @@ app.get("/register", (req, res) => {
 app.get("/login", (req, res) => {
   let user = users[req.cookies["user_id"]];
   let templateVars = {user: user};
-  res.render("login", templateVars)
-})
+  res.render("login", templateVars);
+});
 
 //posts to /register when a user hits the register button and creates a new user in the database
 app.post("/register", (req, res) => {
@@ -89,7 +95,7 @@ app.post("/register", (req, res) => {
     res.status(400);
     res.send("email already exists");
   } else {
-    const userId = generateRandomString();
+    const userId = generateRandomId();
     users[userId] = {id: userId, email: req.body.email, password: req.body.password};
     console.log(users);
     res.cookie("user_id", userId);
@@ -100,7 +106,8 @@ app.post("/register", (req, res) => {
 //add urls to database
 app.post("/urls", (req, res) => {
   const shortURL = generateRandomString();
-  urlDatabase[shortURL] = req.body.longURL;
+  urlDatabase[shortURL] = {id: req.cookies['user_id'], longURL: req.body.longURL};
+  console.log(urlDatabase)
   res.redirect("/urls");
 });
 
@@ -110,7 +117,7 @@ app.post("/login", (req, res) => {
     res.send("E-mail does not exist.");
   } else if (!findPassword(req.body.password)){
     res.status(403);
-    res.send("Password is invalid.");
+    res.send("Invalid e-mail or password.");
   } else {
     res.cookie("user_id", findId(req.body.email));
     res.redirect("/");
@@ -120,14 +127,21 @@ app.post("/login", (req, res) => {
 app.post("/logout", (req, res) => {
   res.clearCookie("user_id");
   res.redirect("/urls");
-})
+});
 
 //deletes url
 app.post("/urls/:id/delete", (req, res) => {
-  delete urlDatabase[req.params.id];
-  res.redirect("/urls");
+  if(users[req.cookies['user_id']].id !== auth(req.cookies["user_id"])){
+    res.redirect("/login");
+
+  } else {
+    delete urlDatabase[req.params.id];
+
+    res.redirect("/urls");
+  }
 });
 
+//posts the url udpdate
 app.post("/urls/:id", (req, res) => {
   urlDatabase[req.params.id] = req.body.long_URL;
   res.redirect("/urls");
@@ -140,21 +154,39 @@ app.get("/u/:shortURL", (req, res) => {
   res.redirect(longURL, templateVars);
 });
 
+//updates url
 app.get("/urls/:id", (req, res) => {
-  let user = users[req.cookies["user_id"]];
-  let templateVars = { shortURL: req.params.id, longURL: urlDatabase[req.params.id], user: user};
-  res.render("urls_show", templateVars);
+  if(req.cookies["user_id"] === undefined){
+    res.redirect("/login");
+  } else if (users[req.cookies['user_id']].id !== auth(req.cookies["user_id"])){
+    res.redirect("/login");
+  } else {
+    let user = users[req.cookies["user_id"]];
+    let templateVars = { shortURL: req.params.id, longURL: urlDatabase[req.params.id].longURL, user: user};
+    res.render("urls_show", templateVars);
+  }
 });
 
-function generateRandomString() {
+function generateRandomId() {
   let id = "";
   const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < 10; i++) {
     id += possible.charAt(Math.floor(Math.random() * possible.length));
   }
 
   return id;
+}
+
+function generateRandomString() {
+  let string = "";
+  const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for (let i = 0; i < 6; i++) {
+    string += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+
+  return string;
 }
 
 //functions to find email, password and id
@@ -165,7 +197,7 @@ function findEmail(email){
     }
   }
   return false;
-};
+}
 
 function findPassword(password){
   for (let pass in users){
@@ -174,7 +206,7 @@ function findPassword(password){
     }
   }
   return false;
-};
+}
 
 function findId(email){
   for (let id in users){
@@ -183,9 +215,16 @@ function findId(email){
     }
   }
   return false;
-};
+}
 
-
+function auth(userId){
+  for (let id in urlDatabase){
+    if(userId === urlDatabase[id].id){
+      return urlDatabase[id].id;
+    }
+  }
+  return false;
+}
 
 
 app.listen(PORT, () => {
