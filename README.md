@@ -2,15 +2,13 @@
 
 TinyApp is a full stack web application buil with Node and Express that allows users to shorten long urls.
 
-##Final Product
+## Final Product
 
-<p align=“center”>
- <img src=“/docs” width=“350” title=“hover text”>
- <img src=“/docs” width=“350” title=“hover text”>
- <img src=“/docs” width=“350” title=“hover text”>
- <img src=“/docs” width=“350” title=“hover text”>
- <img src=“your_relative_path_here_number_2_large_name” width=“350" alt=“accessibility text”>
-</p>
+![Home_Page](https://github.com/NicolaMGH/TinyApp/blob/master/docs/home-page.png)
+![login-page](https://github.com/NicolaMGH/TinyApp/blob/master/docs/login-page.png)
+![register-page](https://github.com/NicolaMGH/TinyApp/blob/master/docs/register-page.png)
+![urls_index-as-logged-in](https://github.com/NicolaMGH/TinyApp/blob/master/docs/urls_index-as-logged-in.png)
+![urls_index.png](https://github.com/NicolaMGH/TinyApp/blob/master/docs/urls_index.png)
 
 ## Dependencies
 
@@ -21,7 +19,7 @@ TinyApp is a full stack web application buil with Node and Express that allows u
 - Body-Parser
 - Cookie-session
 
-##Getting Started
+## Getting Started
 
 - Install all dependencies (Using NPM Install Command).
 - Run the development web server using the 'node express_server.js' command
