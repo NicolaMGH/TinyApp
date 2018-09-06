@@ -8,9 +8,6 @@
 
 
 
-    <form method = "POST" action="/urls/new/">
-      <button>Shorten URL!</button>
-    </form>
 
   <% if(user){ %>
     <div>
@@ -24,6 +21,10 @@
     <p>Please register to view URLS!</p>
     <a href="/register"><p>Register here!</p></a>
   <% } %>
+
+    <form method = "POST" action="/urls/new/">
+      <button>Shorten URL!</button>
+    </form>
 
 
 </body>

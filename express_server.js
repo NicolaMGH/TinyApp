@@ -10,7 +10,7 @@ app.set("view engine", "ejs");
 
 //url database
 const urlDatabase = {
-  "b2xVn2":{
+  "bV2xn2":{
     id: "userRandomID",
     longURL: "http://www.lighthouselabs.ca"
   },
@@ -53,8 +53,9 @@ app.get("/hello", (req, res) => {
 
 app.get("/urls", (req, res) => {
   let user = users[req.cookies["user_id"]];
-  let templateVars = { urls: urlDatabase, user: user};
+  let templateVars = { urls: urlsForUser(req.cookies["user_id"]), user: user};
   res.render("urls_index", templateVars);
+
 });
 
 app.get("/urls/new", (req, res) => {
@@ -131,7 +132,7 @@ app.post("/logout", (req, res) => {
 
 //deletes url
 app.post("/urls/:id/delete", (req, res) => {
-  if(users[req.cookies['user_id']].id !== auth(req.cookies["user_id"])){
+  if(users[req.cookies['user_id']].id !== auth(req.cookies["user_id"], urlsForUser(req.cookies["user_id"]))){
     res.redirect("/login");
 
   } else {
@@ -143,22 +144,22 @@ app.post("/urls/:id/delete", (req, res) => {
 
 //posts the url udpdate
 app.post("/urls/:id", (req, res) => {
-  urlDatabase[req.params.id] = req.body.long_URL;
+  urlDatabase[req.params.id].longURL = req.body.long_URL;
   res.redirect("/urls");
 });
 
 app.get("/u/:shortURL", (req, res) => {
   let user = users[req.cookies["user_id"]];
   let templateVars = {user: user};
-  let longURL = urlDatabase[req.params.shortURL];
-  res.redirect(longURL, templateVars);
+  let longaURL = urlDatabase[req.params.shortURL].longURL;
+  res.redirect(longaURL);
 });
 
 //updates url
 app.get("/urls/:id", (req, res) => {
   if(req.cookies["user_id"] === undefined){
     res.redirect("/login");
-  } else if (users[req.cookies['user_id']].id !== auth(req.cookies["user_id"])){
+  } else if (users[req.cookies['user_id']].id !== auth(req.cookies["user_id"], urlsForUser(req.cookies["user_id"]))){
     res.redirect("/login");
   } else {
     let user = users[req.cookies["user_id"]];
@@ -217,15 +218,25 @@ function findId(email){
   return false;
 }
 
-function auth(userId){
-  for (let id in urlDatabase){
-    if(userId === urlDatabase[id].id){
-      return urlDatabase[id].id;
+function auth(userId, db){
+  for (let id in db){
+    if(userId === db[id].id){
+      return db[id].id;
     }
   }
   return false;
 }
 
+
+function urlsForUser(id){
+  const specific = {};
+  for(let spec in urlDatabase){
+    if(urlDatabase[spec].id === id){
+      specific[spec] = urlDatabase[spec]
+    }
+  }
+  return specific
+}
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
