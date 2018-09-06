@@ -102,7 +102,6 @@ app.post("/register", (req, res) => {
     const hashedPassword = bcrypt.hashSync(password, 10);
     const userId = generateRandomId();
     users[userId] = {id: userId, email: req.body.email, password: hashedPassword};
-    console.log(users);
     req.session.user_id = userId;
     res.redirect("/urls");
   }
@@ -112,7 +111,6 @@ app.post("/register", (req, res) => {
 app.post("/urls", (req, res) => {
   const shortURL = generateRandomString();
   urlDatabase[shortURL] = {id: req.session.user_id, longURL: req.body.longURL};
-  console.log(urlDatabase);
   res.redirect("/urls");
 });
 
