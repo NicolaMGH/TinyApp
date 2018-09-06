@@ -75,11 +75,6 @@ app.get("/urls/new", (req, res) => {
   }
 });
 
-app.post("/urls/new", (req, res) => {
-  res.redirect("/urls/new");
-});
-
-
 //renders register page
 app.get("/register", (req, res) => {
   let user = users[req.session.user_id];

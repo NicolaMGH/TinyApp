@@ -18,11 +18,11 @@
       <% }; %>
     </div>
   <% } else {%>
-    <p>Please register to view URLS!</p>
+    <p>Please register to create short URLS!</p>
     <a href="/register"><p>Register here!</p></a>
   <% } %>
 
-    <form method = "POST" action="/urls/new/">
+    <form method = "GET" action="/urls/new/">
       <button>Shorten URL!</button>
     </form>
 
