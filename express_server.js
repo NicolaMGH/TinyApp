@@ -149,8 +149,8 @@ app.post("/urls/:id", (req, res) => {
 });
 
 app.get("/u/:shortURL", (req, res) => {
-  let user = users[req.cookies["user_id"]];
-  let templateVars = {user: user};
+  // let user = users[req.cookies["user_id"]];
+  // let templateVars = {user: user};
   let longaURL = urlDatabase[req.params.shortURL].longURL;
   res.redirect(longaURL);
 });
