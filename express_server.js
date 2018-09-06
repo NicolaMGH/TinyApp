@@ -112,7 +112,7 @@ app.post("/register", (req, res) => {
 app.post("/urls", (req, res) => {
   const shortURL = generateRandomString();
   urlDatabase[shortURL] = {id: req.session.user_id, longURL: req.body.longURL};
-  console.log(urlDatabase)
+  console.log(urlDatabase);
   res.redirect("/urls");
 });
 
@@ -121,7 +121,7 @@ app.post("/login", (req, res) => {
     res.status(403);
     res.send("E-mail does not exist.");
   } else {
-    let user = findUser(req.body.email)
+    let user = findUser(req.body.email);
 
     if (bcrypt.compareSync(req.body.password, user.password)) {
       req.session.user_id = user.id;
@@ -220,15 +220,6 @@ function findUser(email){
   return false;
 }
 
-// function findId(email){
-//   for (let id in users){
-//     if(email === users[id].email){
-//       return id;
-//     }
-//   }
-//   return false;
-// }
-
 //takes in a user id and database to provide the userid for that database
 function auth(userId, db){
   for (let id in db){
@@ -244,10 +235,10 @@ function urlsForUser(id){
   const specific = {};
   for(let spec in urlDatabase){
     if(urlDatabase[spec].id === id){
-      specific[spec] = urlDatabase[spec]
+      specific[spec] = urlDatabase[spec];
     }
   }
-  return specific
+  return specific;
 }
 
 
