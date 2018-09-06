@@ -5,6 +5,7 @@ app.use(cookieParser());
 const PORT = 8080; // default port 8080
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
+const bcrypt = require('bcrypt');
 
 app.set("view engine", "ejs");
 
@@ -30,7 +31,7 @@ const users = {
  "user2RandomID": {
     id: "user2RandomID",
     email: "user2@example.com",
-    password: "123"
+    password: "12345"
   }
 };
 
@@ -96,8 +97,10 @@ app.post("/register", (req, res) => {
     res.status(400);
     res.send("email already exists");
   } else {
+    const password = req.body.password;
+    const hashedPassword = bcrypt.hashSync(password, 10);
     const userId = generateRandomId();
-    users[userId] = {id: userId, email: req.body.email, password: req.body.password};
+    users[userId] = {id: userId, email: req.body.email, password: hashedPassword};
     console.log(users);
     res.cookie("user_id", userId);
     res.redirect("/urls");
@@ -116,13 +119,19 @@ app.post("/login", (req, res) => {
   if(!findEmail(req.body.email)){
     res.status(403);
     res.send("E-mail does not exist.");
-  } else if (!findPassword(req.body.password)){
-    res.status(403);
-    res.send("Invalid e-mail or password.");
   } else {
-    res.cookie("user_id", findId(req.body.email));
-    res.redirect("/");
+    let user = findUser(req.body.email)
+
+    if (bcrypt.compareSync(req.body.password, user.password)) {
+      res.cookie("user_id", user.id);
+      res.redirect("/");
+    } else{
+      res.status(403);
+      res.send("Invalid e-mail or password.");
+    }
   }
+
+
 });
 
 app.post("/logout", (req, res) => {
@@ -200,24 +209,26 @@ function findEmail(email){
   return false;
 }
 
-function findPassword(password){
-  for (let pass in users){
-    if(password === users[pass].password){
-      return true;
+//finded user object by email and returns that object
+function findUser(email){
+  for (let user in users){
+    if(users[user].email === email){
+      return users[user];
     }
   }
   return false;
 }
 
-function findId(email){
-  for (let id in users){
-    if(email === users[id].email){
-      return id;
-    }
-  }
-  return false;
-}
+// function findId(email){
+//   for (let id in users){
+//     if(email === users[id].email){
+//       return id;
+//     }
+//   }
+//   return false;
+// }
 
+//takes in a user id and database to provide the userid for that database
 function auth(userId, db){
   for (let id in db){
     if(userId === db[id].id){
@@ -227,7 +238,7 @@ function auth(userId, db){
   return false;
 }
 
-
+//pushed user specific urls to a new object
 function urlsForUser(id){
   const specific = {};
   for(let spec in urlDatabase){
@@ -237,6 +248,7 @@ function urlsForUser(id){
   }
   return specific
 }
+
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
